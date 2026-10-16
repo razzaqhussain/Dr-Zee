@@ -656,3 +656,67 @@ h2 { font-size: clamp(32px,3.15vw,46px); letter-spacing: -.04em; }
   .credentials-note { margin-inline: 0; padding-inline: 8px; border-radius: 0; }
   .credentials-note__inner { border-radius: 16px; }
 }
+
+/* Reference-inspired four-column Dr. Zee footer. */
+.site-footer {
+  margin: clamp(8px, 1.4vw, 22px);
+  padding: 54px 0 22px;
+  overflow: hidden;
+  border: 1px solid rgba(220,197,159,.24);
+  border-radius: 28px;
+  color: rgba(255,255,255,.78);
+  background: var(--dz-navy-deep);
+}
+.site-footer > .container { width: min(1368px, calc(100vw - 64px)); }
+.footer-grid { grid-template-columns: 1.08fr .82fr 1.15fr 1.08fr; align-items: start; gap: clamp(28px, 3.8vw, 72px); padding-bottom: 48px; }
+.footer-about { max-width: 350px; }
+.footer-brand { width: 230px; height: 98px; margin: -8px 0 12px; }
+.footer-brand img { object-position: left center; }
+.site-footer .footer-about p { max-width: 345px; color: rgba(255,255,255,.76); font-size: 15px; line-height: 1.75; }
+.site-footer .footer-column h3 { display: flex; align-items: center; gap: 12px; margin: 8px 0 22px; color: #fff; font: 650 17px/1.25 var(--heading); letter-spacing: -.015em; text-transform: none; }
+.footer-heading-icon { width: 22px; height: 22px; flex: 0 0 22px; fill: none; stroke: var(--dz-gold-soft); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.footer-column ul { display: grid; gap: 8px; }
+.site-footer .footer-column li { margin: 0; }
+.site-footer .footer-column li > a { display: inline-flex; min-height: 32px; align-items: center; color: rgba(255,255,255,.78); font-size: 14px; font-weight: 550; line-height: 1.45; transition: color .2s ease, transform .2s ease; }
+.site-footer .footer-column li > a:hover { color: var(--dz-gold-soft); transform: translateX(3px); }
+.footer-contact ul { gap: 10px; }
+.site-footer .footer-contact li > a { align-items: flex-start; gap: 13px; }
+.footer-contact li > a > svg { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 2px; fill: none; stroke: var(--dz-gold-soft); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.footer-contact li small { display: inline-block; margin-top: 3px; color: rgba(255,255,255,.58); font-size: 12px; font-weight: 400; }
+.footer-schedule { display: grid; gap: 17px; margin: 0 0 26px; }
+.footer-schedule > div { display: flex; justify-content: space-between; gap: 14px; color: rgba(255,255,255,.8); font-size: 14px; }
+.footer-schedule dt { font-weight: 450; }
+.footer-schedule dd { margin: 0; color: rgba(255,255,255,.7); text-align: right; }
+.footer-booking { display: flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 10px 20px; border: 1px solid var(--dz-gold-soft); border-radius: 999px; color: var(--dz-navy-deep); background: var(--dz-gold-soft); font-size: 14px; font-weight: 700; transition: background .2s, color .2s, transform .2s; }
+.footer-booking:hover { color: #fff; background: var(--dz-navy); transform: translateY(-2px); }
+.footer-booking svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.footer-bottom { align-items: center; padding-top: 22px; border-top-color: rgba(255,255,255,.19); color: rgba(255,255,255,.68); font-size: 12px; }
+.footer-bottom nav { display: flex; flex-wrap: wrap; gap: 24px; }
+.footer-bottom nav a { color: rgba(255,255,255,.8); transition: color .2s; }
+.footer-bottom nav a:hover { color: var(--dz-gold-soft); }
+@media (max-width: 1120px) {
+  .footer-grid { grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 34px 52px; }
+  .footer-grid > div:last-child { grid-column: auto; }
+  .footer-about { max-width: 450px; }
+}
+@media (max-width: 720px) {
+  .site-footer { margin: 8px; padding: 38px 0 18px; border-radius: 22px; }
+  .site-footer > .container { width: calc(100vw - 52px); }
+  .footer-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 28px 20px; padding-bottom: 30px; }
+  .footer-grid > div:first-child, .footer-grid > div:last-child { grid-column: 1/-1; }
+  .footer-brand { width: 205px; height: 86px; }
+  .site-footer .footer-about p { max-width: 450px; font-size: 14px; }
+  .site-footer .footer-column h3 { gap: 8px; font-size: 15px; }
+  .site-footer .footer-column li > a { font-size: 12px; }
+  .footer-contact li > a { gap: 8px; }
+  .footer-contact li > a > svg { width: 18px; height: 18px; flex-basis: 18px; }
+  .footer-schedule > div { font-size: 13px; }
+  .footer-bottom { align-items: flex-start; flex-direction: column; gap: 14px; }
+  .footer-bottom nav { gap: 10px 17px; }
+}
+@media (max-width: 400px) {
+  .site-footer > .container { width: calc(100vw - 44px); }
+  .footer-grid { column-gap: 14px; }
+  .site-footer .footer-column h3 { font-size: 14px; }
+  .site-footer .footer-column li > a { font-size: 11px; }
+}
