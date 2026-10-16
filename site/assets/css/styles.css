@@ -401,7 +401,7 @@ h3 { font-size: 27px; line-height: 1.15; }
 }
 
 /* Dr. Zee editorial clinic redesign — compact, structured and image-led. */
-:root { --container: min(1280px, calc(100vw - 64px)); --radius: 4px; }
+:root { --container: min(1280px, calc(100vw - 64px)); --radius: 20px; --radius-control: 10px; }
 .section { padding-block: clamp(64px, 6.2vw, 92px); }
 .utility { min-height: 30px; background: var(--dz-navy); letter-spacing: .02em; }
 .utility__inner { min-height: 30px; }
@@ -543,4 +543,28 @@ h2 { font-size: clamp(32px,3.15vw,46px); letter-spacing: -.04em; }
   .trust-item strong { font-size: 14px; }
   .feature-list { gap: 8px; }
   .feature p { font-size: 12px; }
+}
+
+/* Consistent rounded-corner system across every page and interactive surface. */
+.btn, .nav__links .btn, .mobile-nav .btn { border-radius: 999px; }
+.nav-toggle, .carousel-button { border-radius: 50%; }
+.feature, .service-card, .who-card, .route-card, .story-card, .article-card,
+.tabs, .credentials-note__inner, .location-pending, .info-note, .sticky-aside,
+.form-status, .journey-step__icon { border-radius: var(--radius); }
+.hero__portrait, .media-frame img, .service-card__media img, .tab-panel img,
+.doctor-panel__media img, .article-card img, .philosophy__media img,
+.page-feature-image img { border-radius: var(--radius); }
+.tab-button:first-child { border-top-left-radius: var(--radius); }
+.tab-button:last-child { border-bottom-left-radius: var(--radius); }
+.field input, .field select, .field textarea { border-radius: var(--radius-control); }
+.check input { border-radius: 4px; }
+.concept-label { border-radius: var(--radius-control); }
+.site-header .brand img { border-radius: 0; }
+.hero__portrait { overflow: hidden; }
+.mobile-nav { border-radius: 0 0 var(--radius) var(--radius); }
+.media-frame::after { border-radius: var(--radius); }
+.feature:hover, .route-card:hover, .service-card:hover, .article-card:hover { border-radius: var(--radius); }
+@media (max-width: 720px) {
+  .tab-button:first-child { border-radius: var(--radius) 0 0 0; }
+  .tab-button:last-child { border-radius: 0 0 0 var(--radius); }
 }
