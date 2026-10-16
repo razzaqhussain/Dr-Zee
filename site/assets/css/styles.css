@@ -759,3 +759,28 @@ h2 { font-size: clamp(32px,3.15vw,46px); letter-spacing: -.04em; }
   .site-header .nav { width: var(--container); height: 84px; }
   .site-header .brand { width: 154px; height: 78px; }
 }
+
+/* Mobile-first cascade guard: later editorial rules must not restore desktop grids. */
+@media (max-width: 720px) {
+  .split, .consultation { grid-template-columns: minmax(0, 1fr); }
+  .split { gap: 34px; }
+  .consultation__intro { min-height: 360px; padding: 38px 24px; }
+  .consultation__form { min-width: 0; padding: 32px 18px; }
+  .form-grid, .field { min-width: 0; }
+  .tabs { min-width: 0; }
+  .tabs__list { display: flex; max-width: 100%; overscroll-behavior-inline: contain; scrollbar-width: thin; }
+  .tab-button { flex: 0 0 auto; min-height: 52px; padding: 13px 18px; }
+  .tab-panel { grid-template-columns: minmax(0, 1fr); gap: 22px; padding: 24px 20px; }
+  .tab-panel img { height: clamp(190px, 58vw, 300px); }
+  .content-grid { grid-template-columns: minmax(0, 1fr); }
+  .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+@media (max-width: 360px) {
+  .feature-list { grid-template-columns: minmax(0, 1fr); }
+  .feature { padding: 18px; }
+  .feature h3 { font-size: 18px; }
+  .feature p { font-size: 14px; }
+  .trust-ribbon__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .footer-grid { grid-template-columns: minmax(0, 1fr); }
+  .footer-grid > div, .footer-grid > div:first-child, .footer-grid > div:last-child { grid-column: 1; }
+}
