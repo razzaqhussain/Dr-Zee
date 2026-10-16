@@ -91,6 +91,17 @@ const showStory = (nextIndex) => {
 document.querySelector('[data-story-prev]')?.addEventListener('click', () => showStory(activeStory - 1));
 document.querySelector('[data-story-next]')?.addEventListener('click', () => showStory(activeStory + 1));
 
+// A restrained cursor-following light on treatment cards, adapted from 21st.dev's Spotlight Card pattern.
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('pointermove', event => {
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty('--spot-x', `${event.clientX - bounds.left}px`);
+      card.style.setProperty('--spot-y', `${event.clientY - bounds.top}px`);
+    }, { passive: true });
+  });
+}
+
 document.querySelectorAll('[data-demo-form]').forEach(form => form.addEventListener('submit', e => {
   e.preventDefault();
   const status = form.querySelector('.form-status');
@@ -115,8 +126,8 @@ const initMotion = async () => {
     await loadScript('/assets/vendor/gsap/ScrollTrigger.min.js');
     gsap.registerPlugin(ScrollTrigger);
 
-    const revealTargets = '.feature, .journey-step, .who-card, .service-card, .article-card, .route-card, .faq-item, .home-faq__item, .prose > h2, .prose > h3, .prose > p, .prose > ul, .page-feature-image, .cta-band__inner, .consultation__intro, .consultation__form';
-    const revealItems = [...document.querySelectorAll(revealTargets)].filter(el => !el.closest('[hidden]'));
+    const revealTargets = '.feature, .journey-step, .who-card, .service-card, .article-card, .route-card, .faq-item, .home-faq__item, .prose > h2, .prose > h3, .prose > p, .prose > ul, .page-feature-image, .cta-band__inner, .consultation__intro, .consultation__form, .media-frame, .trust-item, .credentials-note__inner, .section-heading, .tabs, .story-card, .doctor-panel__media';
+    const revealItems = [...document.querySelectorAll(revealTargets)].filter(el => !el.closest('[hidden]') && el.getBoundingClientRect().top >= window.innerHeight * 0.88);
     const textItems = [...document.querySelectorAll('.section-heading h2, .stories__heading h2, .home-faq h2, .doctor-panel h2, .page-hero h1')];
     revealItems.forEach(el => el.classList.add('gsap-reveal'));
     textItems.forEach(el => el.classList.add('gsap-text'));
@@ -141,12 +152,12 @@ const initMotion = async () => {
     const heroCopy = document.querySelector('.hero__copy');
     if (heroCopy) {
       gsap.fromTo(heroCopy.querySelectorAll('.eyebrow, h1, .lead, .btn-row'),
-        { autoAlpha: 0, y: 22 },
-        { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power2.out', delay: 0.12 });
+        { y: 14 },
+        { y: 0, duration: 0.72, stagger: 0.1, ease: 'power2.out', delay: 0.08 });
     }
     const heroMedia = document.querySelector('.hero__media');
-    if (heroMedia) gsap.fromTo(heroMedia, { autoAlpha: 0, y: 18, scale: 0.985 }, {
-      autoAlpha: 1, y: 0, scale: 1, duration: 1, delay: 0.22, ease: 'power2.out',
+    if (heroMedia) gsap.fromTo(heroMedia, { y: 12, scale: 0.992 }, {
+      y: 0, scale: 1, duration: 0.9, delay: 0.16, ease: 'power2.out',
     });
 
     const mm = gsap.matchMedia();
@@ -154,7 +165,7 @@ const initMotion = async () => {
       const portrait = document.querySelector('.hero__portrait img');
       const hero = document.querySelector('.hero');
       if (portrait && hero) gsap.to(portrait, {
-        yPercent: 7, ease: 'none',
+        yPercent: 3, ease: 'none',
         scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.7 },
       });
     });
