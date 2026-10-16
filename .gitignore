@@ -1,0 +1,5 @@
+_site/
+_pages-preview/
+node_modules/
+Thumbs.db
+.DS_Store

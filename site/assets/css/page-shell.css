@@ -1,0 +1,4 @@
+/* Kept separate so WordPress/Elementor can enqueue inner-page adjustments independently. */
+.prose > :first-child { margin-top: 0; }
+.prose ul { padding-left: 22px; }
+.prose a:not(.btn) { color: var(--dz-navy); text-decoration: underline; text-underline-offset: 3px; }
