@@ -194,7 +194,7 @@ const initMotion = async () => {
     await loadScript('/assets/vendor/gsap/ScrollTrigger.min.js');
     gsap.registerPlugin(ScrollTrigger);
 
-    const revealTargets = '.feature, .journey-step, .who-card, .service-card, .article-card, .route-card, .faq-item, .home-faq__item, .prose > h2, .prose > h3, .prose > p, .prose > ul, .page-feature-image, .cta-band__inner, .consultation__intro, .consultation__form, .media-frame, .trust-item, .credentials-note__inner, .section-heading, .tabs, .story-card, .doctor-panel__media';
+    const revealTargets = '.feature, .journey-step, .who-card, .service-card, .article-card, .route-card, .faq-item, .home-faq__item, .prose > h2, .prose > h3, .prose > p, .prose > ul, .page-feature-image, .cta-band__inner, .consultation__intro, .consultation__form, .media-frame, .trust-item, .credentials-note__inner, .section-heading, .tabs, .doctor-panel__media';
     const revealItems = [...document.querySelectorAll(revealTargets)].filter(el => !el.closest('[hidden]') && el.getBoundingClientRect().top >= window.innerHeight * 0.88);
     const textItems = [...document.querySelectorAll('.section-heading h2, .stories__heading h2, .home-faq h2, .doctor-panel h2, .page-hero h1')];
     revealItems.forEach(el => el.classList.add('gsap-reveal'));
