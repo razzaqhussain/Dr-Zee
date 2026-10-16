@@ -77,19 +77,87 @@ document.querySelectorAll('.faq-question').forEach(button => button.addEventList
   button.setAttribute('aria-expanded', String(open));
 }));
 
-const storyCards = [...document.querySelectorAll('[data-story]')];
-let activeStory = 0;
-const showStory = (nextIndex) => {
-  if (!storyCards.length) return;
-  activeStory = Math.max(0, Math.min(storyCards.length - 1, nextIndex));
-  storyCards.forEach((card, index) => { card.hidden = index !== activeStory; card.classList.toggle('is-active', index === activeStory); });
-  const previous = document.querySelector('[data-story-prev]');
-  const next = document.querySelector('[data-story-next]');
-  if (previous) previous.disabled = activeStory === 0;
-  if (next) next.disabled = activeStory === storyCards.length - 1;
-};
-document.querySelector('[data-story-prev]')?.addEventListener('click', () => showStory(activeStory - 1));
-document.querySelector('[data-story-next]')?.addEventListener('click', () => showStory(activeStory + 1));
+const storyWindow = document.querySelector('[data-story-window]');
+const storyTrack = document.querySelector('[data-story-track]');
+const storyCards = storyTrack ? [...storyTrack.querySelectorAll('[data-story]')] : [];
+const storyDots = document.querySelector('[data-story-dots]');
+const storyPause = document.querySelector('[data-story-toggle]');
+if (storyTrack && storyCards.length) {
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const cloneCount = Math.min(3, storyCards.length);
+  const beforeClones = storyCards.slice(-cloneCount).map(card => card.cloneNode(true));
+  const afterClones = storyCards.slice(0, cloneCount).map(card => card.cloneNode(true));
+  [...beforeClones, ...afterClones].forEach(card => {
+    card.setAttribute('aria-hidden', 'true');
+    card.inert = true;
+  });
+  beforeClones.reverse().forEach(card => storyTrack.prepend(card));
+  afterClones.forEach(card => storyTrack.append(card));
+
+  let position = cloneCount;
+  let timer;
+  let isVisible = false;
+  let isHovered = false;
+  let isFocused = false;
+  let userPaused = reducedMotion.matches;
+  const dots = storyCards.map((_, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'story-dot';
+    dot.setAttribute('aria-label', `Go to patient story placeholder ${index + 1}`);
+    dot.setAttribute('aria-current', index === 0 ? 'true' : 'false');
+    dot.addEventListener('click', () => { position = cloneCount + index; moveToPosition(); });
+    storyDots?.append(dot);
+    return dot;
+  });
+  const stepSize = () => {
+    const card = storyTrack.querySelector('.story-card');
+    return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(storyTrack).columnGap || getComputedStyle(storyTrack).gap || 0) : 0;
+  };
+  const moveToPosition = (animate = true) => {
+    storyTrack.style.transition = animate ? '' : 'none';
+    storyTrack.style.transform = `translate3d(${-position * stepSize()}px, 0, 0)`;
+    const realIndex = ((position - cloneCount) % storyCards.length + storyCards.length) % storyCards.length;
+    dots.forEach((dot, index) => dot.setAttribute('aria-current', String(index === realIndex)));
+  };
+  const setPaused = (paused) => {
+    clearInterval(timer);
+    if (!paused && isVisible && !isHovered && !isFocused && !userPaused && !reducedMotion.matches) {
+      timer = setInterval(() => { position += 1; moveToPosition(); }, 4200);
+    }
+  };
+  const syncPlayback = () => setPaused(userPaused || !isVisible || isHovered || isFocused || reducedMotion.matches || document.hidden);
+  storyTrack.addEventListener('transitionend', () => {
+    if (position >= cloneCount + storyCards.length) { position = cloneCount; moveToPosition(false); }
+    if (position < cloneCount) { position = cloneCount + storyCards.length - 1; moveToPosition(false); }
+  });
+  document.querySelector('[data-story-next]')?.addEventListener('click', () => { position += 1; moveToPosition(); });
+  document.querySelector('[data-story-prev]')?.addEventListener('click', () => { position -= 1; moveToPosition(); });
+  storyPause?.addEventListener('click', () => {
+    userPaused = !userPaused;
+    storyPause.setAttribute('aria-pressed', String(userPaused));
+    storyPause.setAttribute('aria-label', userPaused ? 'Play automatic stories' : 'Pause automatic stories');
+    storyPause.textContent = userPaused ? '▶' : 'Ⅱ';
+    syncPlayback();
+  });
+  if (storyPause && userPaused) {
+    storyPause.setAttribute('aria-pressed', 'true');
+    storyPause.setAttribute('aria-label', 'Play automatic stories');
+    storyPause.textContent = '▶';
+  }
+  storyWindow?.addEventListener('pointerenter', () => { isHovered = true; syncPlayback(); });
+  storyWindow?.addEventListener('pointerleave', () => { isHovered = false; syncPlayback(); });
+  storyWindow?.addEventListener('focusin', () => { isFocused = true; syncPlayback(); });
+  storyWindow?.addEventListener('focusout', event => {
+    if (!storyWindow.contains(event.relatedTarget)) { isFocused = false; syncPlayback(); }
+  });
+  document.addEventListener('visibilitychange', syncPlayback);
+  reducedMotion.addEventListener?.('change', event => { userPaused = event.matches; syncPlayback(); });
+  const storyObserver = new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; syncPlayback(); }, { threshold: 0.15 });
+  if (storyWindow) storyObserver.observe(storyWindow);
+  moveToPosition(false);
+  window.addEventListener('resize', () => moveToPosition(false), { passive: true });
+}
 
 // A restrained cursor-following light on treatment cards, adapted from 21st.dev's Spotlight Card pattern.
 if (matchMedia('(hover: hover) and (pointer: fine)').matches) {

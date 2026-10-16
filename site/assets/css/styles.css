@@ -568,3 +568,91 @@ h2 { font-size: clamp(32px,3.15vw,46px); letter-spacing: -.04em; }
   .tab-button:first-child { border-radius: var(--radius) 0 0 0; }
   .tab-button:last-child { border-radius: 0 0 0 var(--radius); }
 }
+
+/* Patient-story carousel: ten consent-pending slots, no invented ratings. */
+.stories { overflow: hidden; background: var(--dz-cream); }
+.stories__intro { max-width: 760px; margin: 0 auto 42px; text-align: center; }
+.stories__intro .eyebrow { justify-content: center; padding: 7px 14px; border: 1px solid rgba(7,59,115,.28); border-radius: 999px; color: var(--dz-navy); }
+.stories__intro .eyebrow::before { display: none; }
+.stories__intro h2 { margin-bottom: 14px; font-size: clamp(32px,3.4vw,46px); }
+.stories__intro p { max-width: 680px; margin: auto; color: var(--dz-copy); }
+.stories__heading { align-items: center; margin-bottom: 18px; }
+.stories__pending { display: inline-flex; min-height: 34px; align-items: center; padding: 5px 13px; border: 1px solid var(--dz-border); border-radius: 999px; color: var(--dz-navy); background: rgba(255,255,255,.7); font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+.carousel-controls { align-items: center; }
+.carousel-button { width: 46px; height: 46px; }
+.carousel-button--play { color: white; border-color: var(--dz-navy); background: var(--dz-navy); font-size: 15px; }
+.story-window { overflow: hidden; margin-inline: -2px; padding: 2px; outline-offset: 5px; }
+.story-track { display: flex; gap: 22px; width: max-content; transition: transform .58s cubic-bezier(.22,.72,.2,1); will-change: transform; }
+.story-card { flex: 0 0 calc((min(1280px, 100vw - 64px) - 44px)/3); display: flex; min-height: 300px; flex-direction: column; justify-content: space-between; max-width: none; padding: 28px 27px 24px; border: 1px solid rgba(7,59,115,.08); border-radius: var(--radius); background: white; box-shadow: 0 10px 30px rgba(4,31,62,.045); }
+.story-card__rating { display: flex; align-items: center; gap: 10px; }
+.story-card__rating > span { color: var(--dz-gold); font-size: 22px; letter-spacing: 1px; line-height: 1; }
+.story-card__rating small { color: #68788a; font-size: 11px; }
+.story-card > p { margin: 24px 0 30px; color: var(--dz-ink); font: 500 20px/1.45 var(--heading); }
+.story-card__byline { display: flex; align-items: center; gap: 13px; }
+.story-card__avatar { width: 44px; height: 44px; display: grid; flex: 0 0 44px; place-items: center; border: 1px solid rgba(182,136,63,.38); border-radius: 50%; color: var(--dz-navy); background: var(--dz-cream); font-size: 12px; font-weight: 700; }
+.story-card__byline > div { min-width: 0; }
+.story-card__byline strong, .story-card__byline small { display: block; }
+.story-card__byline strong { color: var(--dz-ink); font-size: 13px; }
+.story-card__byline small { margin-top: 3px; color: #68788a; font-size: 11px; }
+.story-card__mark { margin-left: auto; color: var(--dz-gold); font: 700 40px/.7 var(--heading); }
+.stories__foot { display: flex; align-items: center; justify-content: space-between; gap: 22px; margin-top: 24px; }
+.stories__foot .fine-print { max-width: 850px; margin: 0; font-size: 11px; }
+.story-dots { display: flex; flex: 0 0 auto; align-items: center; gap: 4px; }
+.story-dot { position: relative; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
+.story-dot::before { content: ''; position: absolute; top: 50%; left: 50%; width: 7px; height: 7px; border-radius: 50%; background: #b9b1a3; transform: translate(-50%,-50%); transition: background .2s, transform .2s; }
+.story-dot[aria-current="true"]::before { background: var(--dz-navy); transform: translate(-50%,-50%) scale(1.3); }
+.story-window:focus-visible { outline: 3px solid var(--dz-gold); }
+.story-card:hover { border-color: rgba(182,136,63,.42); box-shadow: 0 18px 38px rgba(4,31,62,.08); }
+@media (max-width: 1099px) {
+  .story-card { flex-basis: calc((min(960px, 100vw - 48px) - 22px)/2); }
+}
+@media (max-width: 699px) {
+  .stories__intro { margin-bottom: 30px; text-align: left; }
+  .stories__intro .eyebrow { justify-content: flex-start; }
+  .stories__heading { display: flex; align-items: flex-start; flex-wrap: wrap; }
+  .carousel-controls { margin-top: 0; }
+  .story-card { flex-basis: calc(100vw - 36px); min-height: 270px; padding: 23px 21px; }
+  .story-card > p { font-size: 18px; }
+  .stories__foot { align-items: flex-start; flex-direction: column; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-track { transition: none !important; }
+}
+
+/* Rounded outlines and softly framed section surfaces, consistently site-wide. */
+.hero .eyebrow,
+.section .eyebrow,
+.page-hero .eyebrow,
+.doctor-panel .eyebrow,
+.consultation .eyebrow { border-radius: 999px; }
+.section, .hero, .trust-ribbon, .credentials-note, .cta-band,
+.doctor-panel, .consultation, .page-hero, .philosophy {
+  margin-inline: clamp(8px, 1.4vw, 22px);
+  border: 1px solid rgba(7,59,115,.1);
+  border-radius: 28px;
+  overflow: clip;
+}
+.section--navy, .doctor-panel, .site-footer { border-color: rgba(220,197,159,.22); }
+.trust-ribbon { border-inline: 1px solid var(--dz-border); }
+.credentials-note { padding-inline: 10px; border-color: transparent; }
+.credentials-note__inner { border-radius: 18px; }
+.cta-band { border-color: rgba(220,197,159,.34); }
+.doctor-panel { overflow: hidden; }
+.consultation { border-color: var(--dz-border); }
+.page-hero { border-color: rgba(7,59,115,.08); }
+.philosophy { overflow: hidden; }
+.section-heading > a.btn, .section-heading .btn { border-radius: 999px; }
+.faq-question, .home-faq__item summary { border-radius: 10px; }
+.tab-button, .tabs__list { border-radius: 12px; }
+.form-status { border-radius: 14px; }
+.feature, .who-card, .service-card, .story-card, .article-card, .route-card,
+.sticky-aside, .info-note, .media-frame img, .page-feature-image img,
+.tab-panel img, .philosophy__media img { border-radius: 20px; }
+.service-card__media { overflow: hidden; border-radius: 20px 20px 0 0; }
+.article-card > img { border-radius: 20px 20px 0 0; }
+@media (max-width: 720px) {
+  .section, .hero, .trust-ribbon, .credentials-note, .cta-band,
+  .doctor-panel, .consultation, .page-hero, .philosophy { margin-inline: 8px; border-radius: 22px; }
+  .credentials-note { margin-inline: 0; padding-inline: 8px; border-radius: 0; }
+  .credentials-note__inner { border-radius: 16px; }
+}
