@@ -6,7 +6,12 @@ const current = (key) => page === key ? ' aria-current="page"' : '';
 
 const header = `
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="utility"><div class="container utility__inner"><span>Private, assessment-led hair restoration</span><span><strong>Consultations by request</strong> &nbsp;•&nbsp; Details confirmed on enquiry</span></div></div>
+  <div class="utility"><div class="utility__inner">
+    <a href="/book-consultation/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v4m10-4v4M4 9h16M5 5h14a1 1 0 0 1 1 1v13H4V6a1 1 0 0 1 1-1Z"/><path d="M8 13h3m-3 3h5"/></svg><span>Private consultations</span></a>
+    <a href="/contact/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 7l8 6 8-6"/></svg><span>Send a confidential enquiry</span></a>
+    <a href="/contact/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.2"/></svg><span>Clinic details on enquiry</span></a>
+    <a href="/book-consultation/"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span>By appointment</span></a>
+  </div></div>
   <div class="header-sentinel" aria-hidden="true"></div>
   <header class="site-header" id="site-header">
     <div class="container nav">
@@ -14,11 +19,12 @@ const header = `
       <nav class="nav__links" aria-label="Primary navigation">
         <a href="/"${current('home')}>Home</a>
         <a href="/about/"${current('about')}>About</a>
-        <a href="/treatments/"${page.startsWith('treatment') ? ' aria-current="page"' : ''}>Treatments</a>
-        <a href="/faqs/"${current('faqs')}>FAQs</a>
-        <a href="/blogs/"${current('blog')}>Blogs</a>
+        <details class="nav-disclosure"${page.startsWith('treatment') ? ' data-active="true"' : ''}><summary${page.startsWith('treatment') ? ' aria-current="page"' : ''}>Treatments</summary><div class="nav-dropdown"><a href="/treatments/">All treatments</a><a href="/treatments/fue-hair-transplant/">FUE hair transplant</a><a href="/treatments/afro-caribbean-hair-transplant/">Afro-textured hair</a><a href="/treatments/beard-eyebrow-restoration/">Beard &amp; eyebrow restoration</a><a href="/treatments/female-hair-loss/">Female hair loss</a></div></details>
+        <details class="nav-disclosure"><summary>Conditions</summary><div class="nav-dropdown"><a href="/treatments/">Hair loss &amp; restoration options</a><a href="/treatments/afro-caribbean-hair-transplant/">Afro-textured hair</a><a href="/treatments/female-hair-loss/">Female hair loss</a><a href="/faqs/">Common questions</a></div></details>
+        <a href="/blogs/"${current('blog')}>Blog</a>
+        <details class="nav-disclosure"><summary>Information</summary><div class="nav-dropdown"><a href="/faqs/">FAQs</a><a href="/about/">About Dr. Zee</a><a href="/privacy-policy/">Privacy notice</a><a href="/medical-disclaimer/">Medical disclaimer</a></div></details>
         <a href="/contact/"${current('contact')}>Contact</a>
-        <a class="btn btn--primary" href="/book-consultation/">Book consultation <span class="btn__arrow">↗</span></a>
+        <a class="btn btn--primary" href="/book-consultation/">Book a consultation <span class="btn__arrow" aria-hidden="true">↗</span></a>
       </nav>
       <button class="nav-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Open menu"><span></span></button>
     </div>
