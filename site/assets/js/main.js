@@ -58,6 +58,49 @@ navToggle?.addEventListener('click', () => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 mobileNav?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+const desktopHoverNav = matchMedia('(min-width: 1121px) and (hover: hover) and (pointer: fine)');
+document.querySelectorAll('.nav-disclosure').forEach(disclosure => {
+  const summary = disclosure.querySelector('summary');
+  let closeTimer;
+  const cancelClose = () => window.clearTimeout(closeTimer);
+  disclosure.addEventListener('toggle', () => {
+    if (disclosure.open) document.querySelectorAll('.nav-disclosure').forEach(other => {
+      if (other !== disclosure) other.open = false;
+    });
+  });
+  disclosure.addEventListener('pointerenter', event => {
+    if (desktopHoverNav.matches && event.pointerType === 'mouse') {
+      cancelClose();
+      disclosure.open = true;
+    }
+  });
+  disclosure.addEventListener('pointerleave', event => {
+    if (desktopHoverNav.matches && event.pointerType === 'mouse') {
+      cancelClose();
+      closeTimer = window.setTimeout(() => {
+        if (!disclosure.matches(':focus-within')) disclosure.open = false;
+      }, 140);
+    }
+  });
+  summary?.addEventListener('click', event => {
+    if (desktopHoverNav.matches && event.detail > 0) {
+      event.preventDefault();
+      cancelClose();
+      disclosure.open = true;
+    }
+  });
+});
+document.addEventListener('click', event => {
+  if (!event.target.closest('.nav-disclosure')) {
+    document.querySelectorAll('.nav-disclosure[open]').forEach(disclosure => { disclosure.open = false; });
+  }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') document.querySelectorAll('.nav-disclosure[open]').forEach(disclosure => {
+    disclosure.open = false;
+    disclosure.querySelector('summary')?.focus();
+  });
+});
 const headerSentinel = document.querySelector('.header-sentinel');
 if (headerSentinel && 'IntersectionObserver' in window) {
   new IntersectionObserver(([entry]) => document.getElementById('site-header')?.classList.toggle('is-scrolled', !entry.isIntersecting), {threshold:0}).observe(headerSentinel);
