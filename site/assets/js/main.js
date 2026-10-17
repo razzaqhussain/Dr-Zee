@@ -30,7 +30,13 @@ const header = `
     </div>
   </header>
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
-    <a href="/">Home</a><a href="/about/">About Dr. Zee</a><a href="/treatments/">Treatments</a><a href="/faqs/">FAQs</a><a href="/blogs/">Blogs</a><a href="/contact/">Contact</a>
+    <a href="/"${current('home')}>Home</a>
+    <a href="/about/"${current('about')}>About</a>
+    <details class="nav-disclosure"${page.startsWith('treatment') ? ' data-active="true"' : ''}><summary${page.startsWith('treatment') ? ' aria-current="page"' : ''}>Treatments</summary><div class="nav-dropdown"><a href="/treatments/">All treatments</a><a href="/treatments/fue-hair-transplant/">FUE hair transplant</a><a href="/treatments/afro-caribbean-hair-transplant/">Afro-textured hair</a><a href="/treatments/beard-eyebrow-restoration/">Beard &amp; eyebrow restoration</a><a href="/treatments/female-hair-loss/">Female hair loss</a></div></details>
+    <details class="nav-disclosure"><summary>Conditions</summary><div class="nav-dropdown"><a href="/treatments/">Hair loss &amp; restoration options</a><a href="/treatments/afro-caribbean-hair-transplant/">Afro-textured hair</a><a href="/treatments/female-hair-loss/">Female hair loss</a><a href="/faqs/">Common questions</a></div></details>
+    <a href="/blogs/"${current('blog')}>Blog</a>
+    <details class="nav-disclosure"><summary>Information</summary><div class="nav-dropdown"><a href="/faqs/">FAQs</a><a href="/about/">About Dr. Zee</a><a href="/privacy-policy/">Privacy notice</a><a href="/medical-disclaimer/">Medical disclaimer</a></div></details>
+    <a href="/contact/"${current('contact')}>Contact</a>
     <a class="btn btn--primary" href="/book-consultation/">Request a consultation</a>
   </nav>`;
 
@@ -56,7 +62,6 @@ navToggle?.addEventListener('click', () => {
   const open = !mobileNav.classList.contains('open');
   mobileNav.classList.toggle('open', open); document.body.classList.toggle('menu-open', open); navToggle.setAttribute('aria-expanded', String(open));
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 mobileNav?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
 const desktopHoverNav = matchMedia('(min-width: 1121px) and (hover: hover) and (pointer: fine)');
 document.querySelectorAll('.nav-disclosure').forEach(disclosure => {
@@ -96,7 +101,13 @@ document.addEventListener('click', event => {
   }
 });
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') document.querySelectorAll('.nav-disclosure[open]').forEach(disclosure => {
+  if (event.key !== 'Escape') return;
+  if (mobileNav?.classList.contains('open')) {
+    closeMenu();
+    navToggle?.focus();
+    return;
+  }
+  document.querySelectorAll('.nav-disclosure[open]').forEach(disclosure => {
     disclosure.open = false;
     disclosure.querySelector('summary')?.focus();
   });
